@@ -4,8 +4,6 @@
 # Copyright (C) 2020 Red Dove Consultants Limited. BSD-3-Clause licensed.
 #
 import argparse
-import configparser
-import io
 import logging
 import logging.handlers
 import os
@@ -15,13 +13,6 @@ import struct
 import sys
 
 PRINT_EXC_TYPE = False
-
-CONFIG_VARS = {
-    'port': '9020',
-    'filename': 'listener.log',
-    'format': '%%(asctime)s %%(name)-15s %%(levelname)-8s %%(message)s',
-    'level': 'DEBUG',
-}
 
 
 class LogRecordStreamHandler(socketserver.StreamRequestHandler):
@@ -98,33 +89,23 @@ def main():
     adhf = argparse.ArgumentDefaultsHelpFormatter
     parser = argparse.ArgumentParser(formatter_class=adhf)
     aa = parser.add_argument
-    aa('-c', '--config', help='Configuration file to use')
+    aa('-p', '--port', help='Which TCP socket port', default=9020)
+    aa('-fn', '--filename', help='Path to log file', default='log_file')
+    aa('-l', '--level', help='Logging level', default='DEBUG')
+    aa('-f', '--format', help='Logging string format',
+       default="%(asctime)s [%(name)-15s] [%(levelname)-8s] %(message)s")
+
     options = parser.parse_args()
-    # print(options)
-    cfg = configparser.ConfigParser(defaults=CONFIG_VARS)
-    fn = options.config
-    if not fn:
-        stream = io.StringIO('[listener]\n')
-    elif not os.path.exists(fn):
-        print(f'Configuration file not found: {fn}')
-        return 1
-    else:
-        stream = open(fn, encoding='utf-8')
-    try:
-        cfg.read_file(stream)
-        port = cfg.getint('listener', 'port')
-        filename = cfg.get('listener', 'filename')
-        fmt = cfg.get('listener', 'format')
-        level = getattr(logging, cfg.get('listener', 'level'))
-        # Replace this next line with however you want to configure local logging
-        # (e.g. with a RotatingFileHandler rather than a FileHandler)
-        logging.basicConfig(level=level, format=fmt, filename=filename)
-        logging.getLogger().info('Log listener started.')
-        tcpserver = LogRecordSocketReceiver(port=port)
-        print(f'About to start TCP server on port {port} ...')
-        tcpserver.serve_until_stopped()
-    finally:
-        stream.close()
+    # print(options.port)
+
+    # Replace this next line with however you want to configure local logging
+    # (e.g. with a RotatingFileHandler rather than a FileHandler)
+    logging.basicConfig(level=options.level, format=options.format, filename=options.filename)
+    logging.getLogger().info('Log listener started.')
+    logging.getLogger().info('More stuff.')
+    tcpserver = LogRecordSocketReceiver(port=options.port)
+    print(f'Starting TCP server on port {options.port} ...')
+    tcpserver.serve_until_stopped()
 
 
 if __name__ == '__main__':

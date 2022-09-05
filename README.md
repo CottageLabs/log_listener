@@ -18,14 +18,27 @@ Django [does not mention this issue in its documentation](https://docs.djangopro
 Log files will be kept in the sub-folder `logs/`.
 
 ## Deployment
-A log server requires a process to run it:
+A log server requires a process to run it, taking four arguments:
 
-`python3 log_listener.py -c pstf_app.ini`
+> python3 log_listener.py --help
+>  
+> -p PORT, --port PORT  Which TCP socket port (default: 9020)
+>  
+> -fn FILENAME, --filename FILENAME
+                        Path to log file (default: log_file)
+>  
+> -l LEVEL, --level LEVEL
+                        Logging level (default: DEBUG)
+>  
+> -f FORMAT, --format FORMAT
+                        Logging string format (default: %(asctime)s [%(name)-15s] [%(levelname)-8s] %(message)s)
+`
 
-would pass the configuration file `pstf_app.ini` to the server.
 
-this long running process is best served by having it overseen by `supervisor` and `log_listener.conf` is a
+This long running process is best served by having it overseen by `supervisor` and `log_listener.conf` is a
 configuration file for `supervisor` to handle two such processes; one for default logging and one for audit logging.
 
 Finally, as log file management has now been decoupled from Django, `log_listener_logrotate.conf` is a configuration
 file for `logrotate` to rotate the log files daily.
+
+***ATTENTION: the transmission is not encrypted and this is therefore not suitable for use over a public network***
