@@ -103,7 +103,7 @@ def main():
     logging.basicConfig(level=options.level, format=options.format, filename=options.filename)
     logging.getLogger().info('Log listener started.')
     logging.getLogger().info('More stuff.')
-    tcpserver = LogRecordSocketReceiver(port=options.port)
+    tcpserver = LogRecordSocketReceiver(port=int(options.port))
     print(f'Starting TCP server on port {options.port} ...')
     tcpserver.serve_until_stopped()
 
