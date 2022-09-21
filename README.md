@@ -35,8 +35,9 @@ A log server requires a process to run it, taking four arguments:
 `
 
 
-This long running process is best served by having it overseen by `supervisor` and `log_listener.conf` is a
-configuration file for `supervisor` to handle two such processes; one for default logging and one for audit logging.
+This long-running process is best served by having it overseen by `supervisor` and `log_listener.conf` is a
+configuration file for `supervisor` to handle three instances; one for default logging, one for Django and one for
+audit logging.
 
 Finally, as log file management has now been decoupled from Django, `log_listener_logrotate.conf` is a configuration
 file for `logrotate` to rotate the log files daily.
