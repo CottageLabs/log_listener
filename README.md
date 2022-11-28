@@ -40,6 +40,11 @@ configuration file for `supervisor` to handle three instances; one for default l
 audit logging.
 
 Finally, as log file management has now been decoupled from Django, `log_listener_logrotate.conf` is a configuration
-file for `logrotate` to rotate the log files daily.
+file for `logrotate` to rotate the log files daily. This is an intermittent operation, best set up as a cronjob. For
+example:
+
+`
+5 12 * * * /usr/sbin/logrotate /etc/logrotate.d/log_listener -state /home/cloo/log_listener/tmp/logrotate-state 
+`
 
 ***ATTENTION: the transmission is not encrypted and this is therefore not suitable for use over a public network***
