@@ -18,6 +18,7 @@ Django [does not mention this issue in its documentation](https://docs.djangopro
 Log files will be kept in the sub-folder `logs/`.
 
 ## Deployment
+***ATTENTION: the transmission is not encrypted and this is therefore not suitable for use over a public network***
 A log server requires a process to run it, taking four arguments:
 
 > python3 log_listener.py --help
@@ -47,4 +48,5 @@ example:
 5 12 * * * /usr/sbin/logrotate /etc/logrotate.d/log_listener -state /home/cloo/log_listener/tmp/logrotate-state 
 `
 
-***ATTENTION: the transmission is not encrypted and this is therefore not suitable for use over a public network***
+Specifying a custom state file for the logrotation resolves an otherwise possible permission issue with the default
+location `/var/lib/logrotate/status.tmp`
