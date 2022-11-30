@@ -45,8 +45,8 @@ file for `logrotate` to rotate the log files daily. This is an intermittent oper
 example:
 
 `
-5 12 * * * /usr/sbin/logrotate /etc/logrotate.d/log_listener -state /home/cloo/log_listener/tmp/logrotate-state 
+5 12 * * * /usr/sbin/logrotate log_listener_logrotate.conf --state /home/cloo/log_listener/logrotate-state 
 `
 
-Specifying a custom state file for the logrotation resolves an otherwise possible permission issue with the default
-location `/var/lib/logrotate/status.tmp`
+Specifying a custom state file for the log rotation resolves an otherwise possible permission issue with the default
+location `/var/lib/logrotate/status.tmp`.
